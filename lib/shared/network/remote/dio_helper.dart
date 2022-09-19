@@ -50,4 +50,22 @@ static Future<Response> postData({
     );
 }
 
+  static Future<Response> putData({
+    required String url,
+    required Map<String,dynamic> data,
+    Map <String,dynamic>? query,
+    String token=''
+  }) async{
+    dio.options.headers={
+      'lang':"en",
+      'Authorization':token,
+      'Content-Type':'application/json'
+    };
+    return await dio.put(
+        url,
+        data: data,
+        queryParameters: query
+    );
+  }
+
 }

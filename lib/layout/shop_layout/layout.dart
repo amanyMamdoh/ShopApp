@@ -20,7 +20,7 @@ class ShopLayout extends StatelessWidget {
         var cubit=LayoutCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text('title'),
+            title: Text('Salla'),
             actions: [
               IconButton(
                 icon: Icon(Icons.search),

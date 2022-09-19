@@ -4,4 +4,14 @@ final home='home';
 
 final categories='categories';
 
-late String istoken;
+final favorites='favorites';
+
+final profile='profile';
+
+final register='register';
+
+final updateUser='update-profile';
+
+final search='products/search';
+
+ String? istoken;

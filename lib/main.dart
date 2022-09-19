@@ -18,8 +18,9 @@ void main() async {
   DioHelper.init();
   await CacheHelper.init();
   Bloc.observer = MyBlocObserver();
-   bool? isBoarding=CacheHelper.getBooleanData(key: 'onBoarding');
-   istoken=CacheHelper.getStringData(key: 'token')!;
+  bool? isBoarding;
+    isBoarding=CacheHelper.getBooleanData(key: 'onBoarding');
+   istoken=CacheHelper.getStringData(key: 'token');
   // Widget? widget;
   print(isBoarding);
   print(istoken);
@@ -47,7 +48,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) =>LayoutCubit()..getHomeData()
-                                                    ..getCtegories(),
+                                                    ..getCtegories()
+                                                    ..getFavorite()
+                                                     ..getUser(),
       child:  MaterialApp(
         theme: lightTheme,
         home:start,

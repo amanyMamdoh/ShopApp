@@ -17,21 +17,30 @@ class HomeScreen extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return BlocConsumer<LayoutCubit,ShopHomeStates>(
-      listener:(Context,State){},
+      listener:(Context,State){
+        if(State is ChangeFavoriteModelSuccessState){
+          if(LayoutCubit.get(context).favModel!.status== false){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('${LayoutCubit.get(context).favModel!.message}'),
+          ));
+          }
+
+        }
+      },
       builder: (Context,State){
         return Conditional.single(
           context: context,
           conditionBuilder: (BuildContext context) => State is! ShopHomeLoadingState && State is! ShopCategoriesLoadingState
                               && LayoutCubit.get(context).catModel !=null&& LayoutCubit.get(context).homeM !=null,
           widgetBuilder: (BuildContext context) => ProductBuilder(LayoutCubit.get(context).homeM,
-                                                         LayoutCubit.get(context).catModel),
+                                                         LayoutCubit.get(context).catModel,context),
           fallbackBuilder: (BuildContext context) =>CircularProgressIndicator(),
         );
       },
     );
   }
 
-  Widget ProductBuilder(HomeModel? homeM,CategoriesModel? catModel) {
+  Widget ProductBuilder(HomeModel? homeM,CategoriesModel? catModel,context) {
     return  SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -86,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisCount: 2,
                         children: List.generate(
                             homeM.data!.productList.length,
-                                (index) => BuildProductItem(homeM.data!.productList[index])),
+                                (index) => BuildProductItem(homeM.data!.productList[index],context)),
                       ),
                     ),
                   ),
@@ -125,7 +134,7 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-  Widget BuildProductItem(Products? model) {
+  Widget BuildProductItem(Products? model,context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       decoration: BoxDecoration(
@@ -195,10 +204,12 @@ class HomeScreen extends StatelessWidget {
                   Spacer(),
                   CircleAvatar(
                     radius: 20,
-                    backgroundColor:Colors.grey,
+                    backgroundColor:LayoutCubit.get(context).favorite[model.id!]! ? baseColor:Colors.grey,
                     child: Center(
                       child: IconButton(
-                          onPressed:()=>print('${model.id}'),
+                          onPressed:(){
+                            LayoutCubit.get(context).changeFavorite(model.id!);
+                          },
                           icon: Icon(Icons.favorite_outline,color: Colors.white,)),
                     ),
                   )

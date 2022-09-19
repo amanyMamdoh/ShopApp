@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shop_app/layout/shop_layout/cubit/cubit.dart';
 import 'package:shop_app/layout/shop_layout/layout.dart';
 import 'package:shop_app/modules/login/cubit/cubit.dart';
 import 'package:shop_app/modules/login/cubit/state.dart';
 import 'package:shop_app/modules/register/register_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/network/end_points.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -25,6 +27,7 @@ class LoginScreen extends StatelessWidget {
         listener: (BuildContext context, state) {
           if(state is ShopLoginSuccessfulState){
             if(state.loginModel.status ==true){
+              istoken=state.loginModel.data!.token!;
               print(state.loginModel.status);
               print(state.loginModel.data!.token!);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -33,6 +36,9 @@ class LoginScreen extends StatelessWidget {
               CacheHelper.saveData(key: 'token',
                   value: state.loginModel.data!.token!).
               then((value) {
+                istoken=state.loginModel.data!.token!;
+                print(istoken);
+                LayoutCubit.get(context).currentIndex=0;
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder:(context)=> ShopLayout()),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shop_app/layout/shop_layout/cubit/cubit.dart';
+import 'package:shop_app/models/categories_model/categories_model.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 import 'package:shop_app/modules/login/login_screen.dart';
 Widget buildTextField( {
@@ -10,7 +12,8 @@ Widget buildTextField( {
   IconData? suffix,
   VoidCallback? suffixPressd,
   final Function(String)? validate ,
-  bool obsecure =false
+  bool obsecure =false,
+   void Function(String)? onSubmit
 })=>
     Container(
         decoration: BoxDecoration(
@@ -32,7 +35,7 @@ Widget buildTextField( {
                 return null;
             },
             keyboardType: type,
-
+            onFieldSubmitted: (String v) =>onSubmit,
             decoration:  InputDecoration    (
               suffixIcon: IconButton(icon: Icon(suffix),
                 onPressed:suffixPressd ,
@@ -95,5 +98,6 @@ Widget buildTextInkWell({
       onTap: tap,
 );
 }
+
 
 
